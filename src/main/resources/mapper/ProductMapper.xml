@@ -137,8 +137,8 @@
       )
     values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{subtitle,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{stock,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{subImages,jdbcType=LONGVARCHAR}, #{detail,jdbcType=LONGVARCHAR}
+      #{stock,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, now(),
+    now(), #{subImages,jdbcType=LONGVARCHAR}, #{detail,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.ProductWithBLOBs">
@@ -169,10 +169,10 @@
         status,
       </if>
       <if test="createTime != null">
-        create_time,
+        now(),
       </if>
       <if test="updateTime != null">
-        update_time,
+        now(),
       </if>
       <if test="subImages != null">
         sub_images,
@@ -257,7 +257,7 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
       <if test="record.subImages != null">
         sub_images = #{record.subImages,jdbcType=LONGVARCHAR},
@@ -281,7 +281,7 @@
       stock = #{record.stock,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      update_time = now(),
       sub_images = #{record.subImages,jdbcType=LONGVARCHAR},
       detail = #{record.detail,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
@@ -299,7 +299,7 @@
       stock = #{record.stock,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -332,7 +332,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
       <if test="subImages != null">
         sub_images = #{subImages,jdbcType=LONGVARCHAR},
@@ -353,7 +353,7 @@
       stock = #{stock,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_time = now(),
       sub_images = #{subImages,jdbcType=LONGVARCHAR},
       detail = #{detail,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -368,7 +368,7 @@
       stock = #{stock,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time =now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

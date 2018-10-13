@@ -1,4 +1,4 @@
-*,class
+*.class
 #package file
 *.war
 *.ear
