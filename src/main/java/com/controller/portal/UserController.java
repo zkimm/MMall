@@ -6,6 +6,8 @@ import com.common.ServiceResponse;
 import com.pojo.User;
 import com.service.serviceInterface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +33,8 @@ public class UserController {
      */
     @RequestMapping(value = "/login.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServiceResponse<User> login(String userName, String password, HttpSession session) {
-        ServiceResponse<User> response = iUserService.login(userName, password);
+    public ServiceResponse<User> login(String username, String password, HttpSession session) {
+        ServiceResponse<User> response = iUserService.login(username, password);
         if (response.isSuccess()) {
             session.setAttribute(Const.CURRENT_USER, response.getData());
         }
@@ -60,7 +62,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/check_valid.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_user_info.do", method = RequestMethod.POST)
     public ServiceResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user != null) {
@@ -104,7 +106,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/reset_password.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_information.do", method = RequestMethod.POST)
     public ServiceResponse<User> updateInformation(User user, HttpSession session) {
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {

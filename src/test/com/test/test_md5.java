@@ -9,7 +9,7 @@ public class test_md5 {
     @Test
     public void test_md5(){
         String result= MD5Util.getMD5Str("HELLa WORLD");
-        String result1= MD5Util.getMD5Str("HELLa WORLD");
-        System.out.print(result.equals(result1));
+        String result1= MD5Util.getMD5Str("104615");
+        System.out.print(result1);
     }
 }

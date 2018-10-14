@@ -132,12 +132,8 @@
       <if test="platformStatus != null">
         platform_status,
       </if>
-      <if test="createTime != null">
-        now(),
-      </if>
-      <if test="updateTime != null">
-        now(),
-      </if>
+        create_time,
+        update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -158,12 +154,8 @@
       <if test="platformStatus != null">
         #{platformStatus,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
+        now()
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.pojo.PayInfoExample" resultType="java.lang.Long">

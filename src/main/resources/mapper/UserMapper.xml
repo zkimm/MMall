@@ -142,12 +142,8 @@
             <if test="role != null">
                 role,
             </if>
-            <if test="createTime != null">
-                now(),
-            </if>
-            <if test="updateTime != null">
-                now(),
-            </if>
+            create_time,
+            update_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -174,12 +170,8 @@
             <if test="role != null">
                 #{role,jdbcType=INTEGER},
             </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
+            now(),
+            now()
         </trim>
     </insert>
     <select id="countByExample" parameterType="com.pojo.UserExample" resultType="java.lang.Long">
@@ -296,7 +288,7 @@
     <!--int countByEmail(String email);-->
     <select id="countByEmail" resultType="int" parameterType="string">
         select count(1) from mmall_user
-        where username=#{email}
+        where email=#{email}
     </select>
     <!--User selectLogin(@Param("username") String username,@Param("password") String password);
   -->

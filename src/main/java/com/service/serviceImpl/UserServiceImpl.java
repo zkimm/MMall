@@ -139,7 +139,7 @@ public class UserServiceImpl implements IUserService {
         }
         //校验token
         String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
-        if (StringUtils.isNotBlank(token)) {
+        if (!StringUtils.isNotBlank(token)) {
             //校验token是否过期
             return ServiceResponse.createByErrorMessage("token无效或者已经过期");
         }
