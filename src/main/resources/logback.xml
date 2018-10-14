@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- scan ：配置文件有更改会刷新 scanPeriod：多长时间扫描一次 -->
+<configuration scan="true" scanPeriod="60" debug="false">
+	<!-- 参数常量 -->
+	<!-- trace < debug < info <warn < error logger.trace("msg") ... -->
+	<property name="log.level" value="debug"></property>
+
+	<property name="log.maxHistory" value="30"></property>
+
+	<property name="log.filePath"
+		value="${catalina.base}/logs/webapps"></property>
+
+<!-- 时间 线程  级别 哪个package 信息 换行 -->
+	<property name="log.pattern"
+		value="%d{yyyy-MM-dd HH:mm:ss.SSS}[%thead]%-5level%logger{50}-%msg%n"></property>
+	<!--  -->
+	<append name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender"></append>
+</configuration>

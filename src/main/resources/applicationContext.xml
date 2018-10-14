@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <context:component-scan base-package="com">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 配置数据库连接池 -->
+    <bean class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          id="dataSource">
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+        <property name="minPoolSize" value="${jdbc.minPoolSize}"></property>
+        <property name="initialPoolSize" value="${jdbc.initPoolSize}"></property>
+        <!-- 关闭连接之后不自动提交 -->
+        <property name="autoCommitOnClose" value="false"></property>
+        <!-- 获取连接超时时间 -->
+        <property name="checkoutTimeout" value="10000"></property>
+        <!-- 当获取连接失败重试次数 -->
+        <property name="acquireRetryAttempts" value="2"></property>
+    </bean>
+
+    <!-- 配置sqlsessionFactory对象 -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean"
+          id="sqlSessionFactory">
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- mybatis全局配置文件的位置 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!-- 扫描entity包，使用别名 -->
+        <property name="typeAliasesPackage" value="com.pojo"></property>
+
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+    </bean>
+
+
+    <!-- 扫描dao接口包，动态实现dao接口，注入到spring容器中 -->
+    <mybatis-spring:scan base-package="com.dao"/>
+
+    <!-- 事务控制器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- 开启基于注解的事务控制器 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!-- 驼峰命名 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!-- 使用jdbc 的useGeneratedKeys获取数据库的自增主键值 -->
+        <setting name="useGeneratedKeys" value="true"/>
+
+        <!-- 使用列的别名替换 -->
+        <setting name="useColumnLabel" value="true"/>
+
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+
+    </settings>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+</configuration>
