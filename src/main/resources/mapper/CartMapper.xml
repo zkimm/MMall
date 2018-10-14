@@ -239,4 +239,6 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

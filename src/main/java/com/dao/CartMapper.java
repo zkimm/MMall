@@ -5,7 +5,7 @@ import com.pojo.CartExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface CartMapper {
+public interface CartMapper{
     long countByExample(CartExample example);
 
     int deleteByExample(CartExample example);
@@ -27,4 +27,6 @@ public interface CartMapper {
     int updateByPrimaryKeySelective(Cart record);
 
     int updateByPrimaryKey(Cart record);
+
+
 }
