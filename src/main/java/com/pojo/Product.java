@@ -1,7 +1,11 @@
 package com.pojo;
 
+import com.util.FtpFileUploadUtil;
+import com.util.PropertiesUtil;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Product {
     private Integer id;
@@ -23,6 +27,16 @@ public class Product {
     private Date createTime;
 
     private Date updateTime;
+    
+    private List<ProductImg> productImgList;
+
+    public List<ProductImg> getProductImgList() {
+        return productImgList;
+    }
+
+    public void setProductImgList(List<ProductImg> productImgList) {
+        this.productImgList = productImgList;
+    }
 
     public Integer getId() {
         return id;
@@ -61,6 +75,7 @@ public class Product {
     }
 
     public void setMainImage(String mainImage) {
+
         this.mainImage = mainImage == null ? null : mainImage.trim();
     }
 

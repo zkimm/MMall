@@ -1,7 +1,7 @@
 package com.service.serviceInterface;
 
 
-import com.common.ServiceResponse;
+import com.common.ServerResponse;
 import com.pojo.User;
 
 public interface IUserService {
@@ -13,10 +13,10 @@ public interface IUserService {
      * @param password
      * @return
      */
-    ServiceResponse<User> login(String username, String password);
+    ServerResponse<User> login(String username, String password);
 
 
-    ServiceResponse<String> register(User user);
+    ServerResponse<String> register(User user);
 
     /**
      * 检查用户名或者Email是否存在
@@ -25,7 +25,7 @@ public interface IUserService {
      * @param type
      * @return
      */
-    ServiceResponse<String> checkValid(String str, String type);
+    ServerResponse<String> checkValid(String str, String type);
 
     /**
      * 获取设置的问题
@@ -33,7 +33,7 @@ public interface IUserService {
      * @param username
      * @return
      */
-    ServiceResponse selectQuestion(String username);
+    ServerResponse selectQuestion(String username);
 
     /**
      * 回答问题正确之后，就会把forgetToken放到cache中，
@@ -43,9 +43,9 @@ public interface IUserService {
      * @param answer
      * @return
      */
-    ServiceResponse<String> checkAnswer(String username, String question, String answer);
+    ServerResponse<String> checkAnswer(String username, String question, String answer);
 
-    ServiceResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken);
+    ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken);
 
     /**
      * 重置密码
@@ -54,11 +54,13 @@ public interface IUserService {
      * @param user
      * @return
      */
-    ServiceResponse<String> resetPasswrod(String passwordOld, String passwordNew, User user);
+    ServerResponse<String> resetPasswrod(String passwordOld, String passwordNew, User user);
 
-    ServiceResponse<User> updateInformation(User user);
+    ServerResponse<User> updateInformation(User user);
 
 
-    ServiceResponse<User>  getInformation(Integer userId);
+    ServerResponse<User> getInformation(Integer userId);
+
+     boolean isAdmin(User user);
 
 }

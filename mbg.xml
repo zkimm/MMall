@@ -32,30 +32,23 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.dao" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <table schema="" tableName="mmall_cart">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_category">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_order">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_order_item">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_pay_info">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_product">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_shipping">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
-        <table schema="" tableName="mmall_user">
-            <!--<columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
-        </table>
+
+        <!--<table schema="" tableName="mmall_cart">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_category">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_order">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_order_item">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_pay_info">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_product">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_shipping">-->
+        <!--</table>-->
+        <!--<table schema="" tableName="mmall_user"></table>-->
+        <table schema="" tableName="mmall_product_img"></table>
 
 
     </context>

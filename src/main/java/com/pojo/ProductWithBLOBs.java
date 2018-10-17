@@ -1,5 +1,7 @@
 package com.pojo;
 
+import com.util.PropertiesUtil;
+
 public class ProductWithBLOBs extends Product {
     private String subImages;
 

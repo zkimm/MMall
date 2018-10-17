@@ -3,7 +3,9 @@ package com.dao;
 import com.pojo.Product;
 import com.pojo.ProductExample;
 import com.pojo.ProductWithBLOBs;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ProductMapper {
@@ -23,6 +25,8 @@ public interface ProductMapper {
 
     ProductWithBLOBs selectByPrimaryKey(Integer id);
 
+    Product selectProductByPrimaryKey(Integer id);
+
     int updateByExampleSelective(@Param("record") ProductWithBLOBs record, @Param("example") ProductExample example);
 
     int updateByExampleWithBLOBs(@Param("record") ProductWithBLOBs record, @Param("example") ProductExample example);
@@ -34,4 +38,6 @@ public interface ProductMapper {
     int updateByPrimaryKeyWithBLOBs(ProductWithBLOBs record);
 
     int updateByPrimaryKey(Product record);
+
+    int updateProductSelective(Product record);
 }

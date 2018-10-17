@@ -17,6 +17,7 @@
         <result column="sub_images" jdbcType="LONGVARCHAR" property="subImages"/>
         <result column="detail" jdbcType="LONGVARCHAR" property="detail"/>
     </resultMap>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -83,6 +84,15 @@
     <sql id="Blob_Column_List">
         sub_images, detail
     </sql>
+
+    <select id="selectProductByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from mmall_product
+        where id=#{id}
+    </select>
+
+
     <select id="selectByExampleWithBLOBs" parameterType="com.pojo.ProductExample" resultMap="ResultMapWithBLOBs">
         select
         <if test="distinct">
@@ -365,4 +375,37 @@
       update_time =now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <update id="updateProductSelective" parameterType="com.pojo.Product" >
+        update mmall_product
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="subtitle != null">
+                subtitle = #{subtitle,jdbcType=VARCHAR},
+            </if>
+            <if test="mainImage != null">
+                main_image = #{mainImage,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="stock != null">
+                stock = #{stock,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

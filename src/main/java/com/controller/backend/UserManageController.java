@@ -1,7 +1,7 @@
 package com.controller.backend;
 
 import com.common.Const;
-import com.common.ServiceResponse;
+import com.common.ServerResponse;
 import com.pojo.User;
 import com.service.serviceInterface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,8 @@ public class UserManageController {
 
     @ResponseBody
     @RequestMapping(value = "/login.do",method = RequestMethod.POST)
-    public ServiceResponse<User> login(HttpSession session,String username,String  password){
-        ServiceResponse<User> response=iUserService.login(username,password);
+    public ServerResponse<User> login(HttpSession session, String username, String password){
+        ServerResponse<User> response=iUserService.login(username,password);
         if (response.isSuccess()){
             User user=response.getData();
             if (user.getRole()== Const.Role.ROLE_ADMIN){
@@ -30,7 +30,7 @@ public class UserManageController {
                 session.setAttribute(Const.CURRENT_USER,user);
                 return response;
             }else {
-                return ServiceResponse.createByErrorMessage("不是管理员，无法登录");
+                return ServerResponse.createByErrorMessage("不是管理员，无法登录");
             }
         }
         return response;
