@@ -4,6 +4,8 @@ import com.common.Const;
 import com.common.ServerResponse;
 import com.common.TokenCache;
 import com.dao.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.service.serviceInterface.IUserService;
 import com.sun.org.apache.regexp.internal.RE;
@@ -12,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service("iUserService")
@@ -211,6 +214,13 @@ public class UserServiceImpl implements IUserService {
             return true;
         }
         return false;
+    }
+
+    public ServerResponse getUsers(Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> userList = userMapper.selectByExample(null);
+        PageInfo pageInfo=new PageInfo(userList,5);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
 }

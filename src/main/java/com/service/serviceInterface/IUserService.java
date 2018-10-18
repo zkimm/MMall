@@ -63,4 +63,6 @@ public interface IUserService {
 
      boolean isAdmin(User user);
 
+     ServerResponse getUsers(Integer pageNum,Integer pageSize);
+
 }

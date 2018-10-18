@@ -2,10 +2,12 @@ package com.dao;
 
 import com.pojo.Cart;
 import com.pojo.CartExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
-public interface CartMapper{
+public interface CartMapper {
     long countByExample(CartExample example);
 
     int deleteByExample(CartExample example);
@@ -18,6 +20,8 @@ public interface CartMapper{
 
     List<Cart> selectByExample(CartExample example);
 
+    Cart selectByExampleWithUserIdProductId(CartExample example);
+
     Cart selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Cart record, @Param("example") CartExample example);
@@ -28,5 +32,9 @@ public interface CartMapper{
 
     int updateByPrimaryKey(Cart record);
 
+    int deleteCartByUserIdProductIds(@Param("userId") Integer userId,@Param("productIdList") List<String> productIdList);
 
+    int checkedOrUnchecked(@Param("userId") Integer userId,@Param("productId") Integer productId,@Param("checked") Integer checked);
+
+    int getCartProductCount(@Param("userId") Integer userId);
 }
