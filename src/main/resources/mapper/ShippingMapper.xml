@@ -109,7 +109,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.pojo.Shipping">
+    <insert id="insert" parameterType="com.pojo.Shipping" useGeneratedKeys="true" keyProperty="id">
         insert into mmall_shipping (id, user_id, receiver_name,
         receiver_phone, receiver_mobile, receiver_province,
         receiver_city, receiver_district, receiver_address,
@@ -314,4 +314,12 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <!--Shipping selectByUserIdShippingId(@Param("id") Integer userId, @Param("id") Integer id)-->
+    <select id="selectByUserIdShippingId" parameterType="map" resultType="com.pojo.Shipping">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_shipping
+        where id=#{shippingId}
+        and user_id=#{userId}
+    </select>
 </mapper>

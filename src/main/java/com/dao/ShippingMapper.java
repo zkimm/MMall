@@ -2,7 +2,9 @@ package com.dao;
 
 import com.pojo.Shipping;
 import com.pojo.ShippingExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ShippingMapper {
@@ -19,6 +21,8 @@ public interface ShippingMapper {
     List<Shipping> selectByExample(ShippingExample example);
 
     Shipping selectByPrimaryKey(Integer id);
+
+    Shipping selectByUserIdShippingId(@Param("userId") Integer userId, @Param("shippingId") Integer id);
 
     int updateByExampleSelective(@Param("record") Shipping record, @Param("example") ShippingExample example);
 

@@ -4,10 +4,13 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 定义服务端返回的对象，返回不为空的字段
+ *
  * @param <T>
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -19,6 +22,21 @@ public class ServerResponse<T> implements Serializable {
     private T data;
 
     private List<T> dataList;
+
+    private Map<String, Object> map = new HashMap<>();
+
+    public ServerResponse<T> add(String key, Object value) {
+        this.getMap().put(key, value);
+        return this;
+    }
+
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
+    }
 
     public List<T> getDataList() {
         return dataList;
@@ -61,12 +79,12 @@ public class ServerResponse<T> implements Serializable {
         return this.status == ResponseCode.SUCCESS.getCode();
     }
 
-    public static <T> ServerResponse<T> createBySuccess(){
+    public static <T> ServerResponse<T> createBySuccess() {
         return new ServerResponse<>(ResponseCode.SUCCESS.getCode());
     }
 
-    public static <T> ServerResponse<T> createBySuccessMessage(String msg){
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(),msg);
+    public static <T> ServerResponse<T> createBySuccessMessage(String msg) {
+        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg);
     }
 
     public static <T> ServerResponse<T> createBySuccess(T data) {
@@ -78,7 +96,7 @@ public class ServerResponse<T> implements Serializable {
     }
 
     public static <T> ServerResponse<T> createBySuccess(String msg, T data) {
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg,data);
+        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, data);
     }
 
     public static <T> ServerResponse<T> createBySuccess(String msg, List<T> dataList) {
@@ -90,7 +108,7 @@ public class ServerResponse<T> implements Serializable {
     }
 
     public static <T> ServerResponse<T> createByError(T data) {
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(),data);
+        return new ServerResponse<>(ResponseCode.ERROR.getCode(), data);
     }
 
     public static <T> ServerResponse<T> createByError(List<T> dataList) {
@@ -98,21 +116,20 @@ public class ServerResponse<T> implements Serializable {
     }
 
     public static <T> ServerResponse<T> createByErrorMessage(String msg) {
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(),msg);
+        return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg);
     }
 
     public static <T> ServerResponse<T> createByError(String msg, T data) {
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg,data);
+        return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg, data);
     }
 
     public static <T> ServerResponse<T> createByError(String msg, List<T> dataList) {
         return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg, dataList);
     }
 
-    public static <T> ServerResponse<T> createByErrorCodeMessage(int  errorCode, String msg) {
+    public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String msg) {
         return new ServerResponse<>(errorCode, msg);
     }
-
 
 
     public int getStatus() {
