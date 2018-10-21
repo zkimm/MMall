@@ -2,7 +2,9 @@ package com.dao;
 
 import com.pojo.Order;
 import com.pojo.OrderExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderMapper {
@@ -17,6 +19,8 @@ public interface OrderMapper {
     int insertSelective(Order record);
 
     List<Order> selectByExample(OrderExample example);
+
+    Order selectByUsreIdOrderNo(@Param("userId") Integer userId,@Param("orderNo") Long orderNo);
 
     Order selectByPrimaryKey(Integer id);
 

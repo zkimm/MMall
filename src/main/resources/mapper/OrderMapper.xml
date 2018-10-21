@@ -95,6 +95,16 @@
             order by ${orderByClause}
         </if>
     </select>
+    <!--selectByUsreIdOrderNo(@Param("userId") Integer userId,@Param("orderNum") Long orderNum)-->
+    <select id="selectByUsreIdOrderNo" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from mmall_order
+        where user_id=#{userId}
+        <if test="orderNo !=null">
+            and order_no=#{orderNo}
+        </if>
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
