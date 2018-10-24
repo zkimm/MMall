@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.pojo.Order;
 import com.pojo.OrderItem;
 import com.pojo.OrderItemExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface OrderItemMapper {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+
+    void batchInsert(@Param("orderItemList") List<OrderItem> orderItemList);
 }

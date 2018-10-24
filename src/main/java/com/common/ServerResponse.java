@@ -21,8 +21,6 @@ public class ServerResponse<T> implements Serializable {
 
     private T data;
 
-    private List<T> dataList;
-
     private Map<String, Object> map = new HashMap<>();
 
     public ServerResponse<T> add(String key, Object value) {
@@ -38,9 +36,6 @@ public class ServerResponse<T> implements Serializable {
         this.map = map;
     }
 
-    public List<T> getDataList() {
-        return dataList;
-    }
 
     private ServerResponse(int status) {
         this.status = status;
@@ -56,21 +51,10 @@ public class ServerResponse<T> implements Serializable {
         this.data = data;
     }
 
-    private ServerResponse(int status, List<T> dataList) {
-        this.status = status;
-        this.dataList = dataList;
-    }
-
 
     private ServerResponse(int status, String msg, T data) {
         this.status = status;
         this.data = data;
-        this.msg = msg;
-    }
-
-    private ServerResponse(int status, String msg, List<T> dataList) {
-        this.status = status;
-        this.dataList = dataList;
         this.msg = msg;
     }
 
@@ -91,16 +75,8 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), data);
     }
 
-    public static <T> ServerResponse<T> createBySuccess(List<T> dataList) {
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), dataList);
-    }
-
     public static <T> ServerResponse<T> createBySuccess(String msg, T data) {
         return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, data);
-    }
-
-    public static <T> ServerResponse<T> createBySuccess(String msg, List<T> dataList) {
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, dataList);
     }
 
     public static <T> ServerResponse<T> createByError() {
@@ -111,9 +87,6 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<>(ResponseCode.ERROR.getCode(), data);
     }
 
-    public static <T> ServerResponse<T> createByError(List<T> dataList) {
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(), dataList);
-    }
 
     public static <T> ServerResponse<T> createByErrorMessage(String msg) {
         return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg);
@@ -121,10 +94,6 @@ public class ServerResponse<T> implements Serializable {
 
     public static <T> ServerResponse<T> createByError(String msg, T data) {
         return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg, data);
-    }
-
-    public static <T> ServerResponse<T> createByError(String msg, List<T> dataList) {
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg, dataList);
     }
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String msg) {
