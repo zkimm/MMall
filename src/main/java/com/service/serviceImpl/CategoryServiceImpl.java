@@ -5,6 +5,7 @@ import com.dao.CategoryMapper;
 import com.pojo.Category;
 import com.pojo.CategoryExample;
 import com.service.serviceInterface.ICategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.omg.PortableInterceptor.INACTIVE;
@@ -18,10 +19,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
-    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+//    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -73,7 +75,7 @@ public class CategoryServiceImpl implements ICategoryService {
         example.createCriteria().andParentIdEqualTo(categoryId);
         List<Category> categoryList = categoryMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(categoryList)) {
-            logger.info("未找到当前分类的子分类");
+            log.info("未找到当前分类的子分类");
         }
         return ServerResponse.createBySuccess(categoryList);
     }

@@ -5,6 +5,10 @@ public class Const {
     public static final String EMAIL = "email";
     public static final String USERNAME = "username";
 
+    public interface RedisCache{
+        int REDIS_SESSION_TIME=60*30;//30分钟
+    }
+
     public interface Cart {
         int CHECKED = 1;//选中状态
         int UN_CHECKED = 0;//未选中状态

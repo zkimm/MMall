@@ -15,7 +15,7 @@ public class PropertiesUtil {
     private static Properties prop;
 
     static {
-        String fileName="ftp.properties";
+        String fileName= "mmall.properties";
         prop=new Properties();
         try {
             prop.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName),"UTF-8"));

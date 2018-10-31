@@ -45,6 +45,7 @@ public class OrderController {
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
+        //如果不传则需要一个inputStream
         String path = request.getSession().getServletContext().getRealPath("upload");
         return iOrderService.pay(user.getId(), orderNo, path);
     }

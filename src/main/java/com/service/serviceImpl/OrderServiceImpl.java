@@ -35,6 +35,7 @@ import org.omg.PortableInterceptor.INACTIVE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements IOrderService {
     private ShippingMapper shippingMapper;
 
     /**
-     * @param orderNum 订单号
+     * @param orderNo 订单号
      * @param userId
      * @param path     传到哪里的路径
      * @return 返回订单号以及二维码的url返回给前端
@@ -71,15 +72,17 @@ public class OrderServiceImpl implements IOrderService {
         Map<String, String> resultMap = new HashMap<>();
         Order order = orderMapper.selectByUsreIdOrderNo(userId, orderNo);
         if (order == null) {
-            return ServerResponse.createByErrorMessage("用户没有该订单");
+            return ServerResponse.createByErrorMessage("没有该订单");
         }
         resultMap.put("orderNo", String.valueOf(order.getOrderNo()));
+        //将商品的的相关信息封装到alipay的请求参数中，并将二维码的地址返回给前端
         resultMap.put("qrUrl", aplipay(order, path));
         return ServerResponse.createBySuccess(resultMap);
     }
 
 
     public ServerResponse aliCallback(Map<String, String> params) {
+        //从请求参数中获取orderNo，orderno是在appliy中设置的orderNo
         long orderNo = Long.parseLong(params.get("out_trade_no"));
         String tradeNo = params.get("trade_no");
         String tradeStatus = params.get("trade_status");
@@ -89,6 +92,7 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
+            //如果订单已经付款，在调用则提示重复调用
             return ServerResponse.createBySuccessMessage("支付宝重复调用");
         }
         //交易成功
@@ -98,10 +102,12 @@ public class OrderServiceImpl implements IOrderService {
             orderMapper.updateByPrimaryKeySelective(order);
         }
 
+        //设置
         PayInfo payInfo = new PayInfo();
         payInfo.setUserId(order.getUserId());
         payInfo.setOrderNo(order.getOrderNo());
         payInfo.setPayPlatform(Const.PayPlatformEnum.ALIPAY.getCode());
+        payInfo.setPlatformStatus(tradeStatus);
         payInfo.setPlatformNumber(tradeNo);
 
         payInfoMapper.insert(payInfo);
@@ -119,9 +125,7 @@ public class OrderServiceImpl implements IOrderService {
         if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
             return ServerResponse.createBySuccess();
         }
-
         return ServerResponse.createByError();
-
     }
 
     public ServerResponse getOrderList(Integer userId, Integer pageNo, Integer pageSize) {
@@ -155,6 +159,11 @@ public class OrderServiceImpl implements IOrderService {
 
     }
 
+    /**
+     *获取一个user的所有orderitem
+     * @param userId
+     * @return
+     */
     public ServerResponse getOrderCartProduct(Integer userId) {
         OrderProductVo orderProductVo = new OrderProductVo();
         //获取购物车中被选中的item
@@ -316,6 +325,7 @@ public class OrderServiceImpl implements IOrderService {
         orderVo.setPostage(order.getPostage());
         orderVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
         orderVo.setShippingId(order.getShippingId());
+
         Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
         if (shipping != null) {
             orderVo.setReceiverName(shipping.getReceiverName());
@@ -581,13 +591,14 @@ public class OrderServiceImpl implements IOrderService {
                 String filePath = String.format(path + "/qr_%s.png", response.getOutTradeNo());
                 String qrFileName = String.format("qr_%s.png", response.getOutTradeNo());
 
+                //先将二维码暂时保存到upload中
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
 
                 File targetFile = new File(path, qrFileName);
                 //上传
-                String qr_path = "MMall/qr_code/" + targetFile.getName();
+                String qr_path = "MMall/qr_code/" + targetFile.getName();//ftp服务器中二维码的保存路径
                 FtpFileUploadUtil.fileUpload(qr_path, targetFile);
-                String qrUrl = PropertiesUtil.getProperty("ftp.server.http.serverIp") + targetFile.getName();
+                String qrUrl = PropertiesUtil.getProperty("ftp.server.http.serverIp")+"MMall/qr_code/" + targetFile.getName();
 
                 logger.info("上传二维码二次:" + qrUrl);
                 //                ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
