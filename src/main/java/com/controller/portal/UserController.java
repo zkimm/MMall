@@ -41,8 +41,6 @@ public class UserController {
         if (response.isSuccess()) {
 //            session.setAttribute(Const.CURRENT_USER, response.getData());
             CookieUtil.writerLoginToken(httpServletResponse,session.getId());
-            String token = CookieUtil.readLoginToken(request);
-            System.out.println(token);
             //6026D3E82ED223BA4494462B312C5E1C
             RedisPoolUtil.setEx(session.getId(), JsonUtil.obj2String(response.getData()),Const.RedisCache.REDIS_SESSION_TIME);
         }
@@ -51,9 +49,16 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/logout.do", method = RequestMethod.POST)
-    public ServerResponse<String> logout(HttpSession session) {
+    public ServerResponse<String> logout(HttpServletRequest request,HttpServletResponse response) {
         //将其从session中去除掉
-        session.removeAttribute(Const.CURRENT_USER);
+//        session.removeAttribute(Const.CURRENT_USER);
+        //1、获取sessionId
+        String loginToken = CookieUtil.readLoginToken(request);
+        //2、删除cookie
+        CookieUtil.delLoginToken(request,response);
+        //3、删除缓存
+        RedisPoolUtil.del(loginToken);
+
         return ServerResponse.createBySuccess();
     }
 
@@ -71,8 +76,14 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/get_user_info.do", method = RequestMethod.POST)
-    public ServerResponse<User> getUserInfo(HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<User> getUserInfo(HttpServletRequest request) {
+//        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        //获取sessionId
+        String loginToken = CookieUtil.readLoginToken(request);
+        //通过sessionId从redis中获取user的json数据
+        String userJson = RedisPoolUtil.get(loginToken);
+        //json转换成user对象
+        User user = JsonUtil.string2Obj(userJson, User.class);
         if (user != null) {
             return ServerResponse.createBySuccess(user);
         }
