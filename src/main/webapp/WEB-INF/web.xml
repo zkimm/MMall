@@ -34,37 +34,14 @@
         <servlet-name>springDispatcherServlet</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
-    <!--验证码-->
-    <servlet>
-        <servlet-name>Kaptcha</servlet-name>
-        <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
-        <init-param>
-            <param-name>kaptcha.border</param-name>
-            <param-value>no</param-value>
-        </init-param>
-        <init-param>
-            <param-name>kaptcha.textproducer.char.string</param-name>
-            <param-value>ASDFDGDSWERQTYU123456789</param-value>
-        </init-param>
-        <init-param>
-            <param-name>kaptcha.background.clear.from</param-name>
-            <param-value>white</param-value>
-        </init-param>
-        <init-param>
-            <param-name>kaptcha.background.clear.to</param-name>
-            <param-value>white</param-value>
-        </init-param>
-        <init-param>
-            <param-name>kaptcha.obscurificator.impl</param-name>
-            <param-value>com.google.code.kaptcha.impl.WaterRipple</param-value>
-        </init-param>
-        <init-param>
-            <param-name>kaptcha.noise.color</param-name>
-            <param-value>255,96,0</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Kaptcha</servlet-name>
-        <url-pattern>/captcha.jpg</url-pattern>
-    </servlet-mapping>
+
+    <!--重置sessionId时间的filter-->
+    <filter>
+        <filter-name>sessionExpireFilter</filter-name>
+        <filter-class>com.controller.common.SessionExpireFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sessionExpireFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
 </web-app>
