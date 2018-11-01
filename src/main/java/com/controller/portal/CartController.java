@@ -5,12 +5,14 @@ import com.common.ResponseCode;
 import com.common.ServerResponse;
 import com.pojo.User;
 import com.service.serviceInterface.ICartService;
+import com.service.serviceInterface.IUserService;
 import com.vo.CartVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -19,10 +21,13 @@ public class CartController {
     @Autowired
     private ICartService iCartService;
 
+    @Autowired
+    private IUserService iUserService;
+
     @ResponseBody
     @RequestMapping("/list.do")
-    public ServerResponse<CartVo> list(HttpSession session, Integer count, Integer productId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> list(HttpServletRequest request, Integer count, Integer productId) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -33,8 +38,8 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping("/add.do")
-    public ServerResponse<CartVo> add(HttpSession session, Integer count, Integer productId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> add(HttpServletRequest request, Integer count, Integer productId) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -45,8 +50,8 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping("/update.do")
-    public ServerResponse<CartVo> update(HttpSession session, Integer count, Integer productId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> update(HttpServletRequest request, Integer count, Integer productId) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -57,8 +62,8 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping("/delete_product.do")
-    public ServerResponse<CartVo> deleteProduct(HttpSession session, String productIds) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> deleteProduct(HttpServletRequest request, String productIds) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -71,8 +76,8 @@ public class CartController {
     //全选
     @ResponseBody
     @RequestMapping("/select_all.do")
-    public ServerResponse<CartVo> selectAll(HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> selectAll(HttpServletRequest request) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -84,8 +89,8 @@ public class CartController {
     //全反选
     @ResponseBody
     @RequestMapping("/un_select_all.do")
-    public ServerResponse<CartVo> unselectAll(HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> unselectAll(HttpServletRequest request) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -97,8 +102,8 @@ public class CartController {
     //单独选
     @ResponseBody
     @RequestMapping("/select.do")
-    public ServerResponse<CartVo> select(HttpSession session, Integer productId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> select(HttpServletRequest request, Integer productId) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -110,8 +115,8 @@ public class CartController {
     //单独反选
     @ResponseBody
     @RequestMapping("/un_select.do")
-    public ServerResponse<CartVo> unselect(HttpSession session, Integer productId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> unselect(HttpServletRequest request, Integer productId) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -123,8 +128,8 @@ public class CartController {
     //查询购物车里面的产品数量，如果一个产品有十个就显示10
     @ResponseBody
     @RequestMapping("/get_cart_product_count.do")
-    public ServerResponse getCartProductCount(HttpSession session, Integer productId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getCartProductCount(HttpServletRequest request, Integer productId) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }

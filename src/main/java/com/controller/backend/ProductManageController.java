@@ -42,7 +42,7 @@ public class ProductManageController {
     public ServerResponse productSave(HttpServletRequest request, Product product) {
         HttpSession session = request.getSession();
         //判断user是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请以管理员身份登录");
         }
@@ -69,9 +69,9 @@ public class ProductManageController {
 
     @RequestMapping("/set_sale_status.do")
     @ResponseBody
-    public ServerResponse setSaleStatus(HttpSession session, Integer productId, Integer status) {
+    public ServerResponse setSaleStatus(HttpServletRequest request, Integer productId, Integer status) {
         //判断user是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请以管理员身份登录");
         }
@@ -86,10 +86,10 @@ public class ProductManageController {
 
     @ResponseBody
     @RequestMapping("/list.do")
-    public ServerResponse list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+    public ServerResponse list(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         //判断user是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请以管理员身份登录");
         }
@@ -104,9 +104,9 @@ public class ProductManageController {
 
     @RequestMapping("/detail.do")
     @ResponseBody
-    public ServerResponse getDetail(HttpSession session, Integer productId) {
+    public ServerResponse getDetail(HttpServletRequest request, Integer productId) {
         //判断user是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请以管理员身份登录");
         }
@@ -121,10 +121,10 @@ public class ProductManageController {
 
     @ResponseBody
     @RequestMapping("/search.do")
-    public ServerResponse searchProduct(HttpSession session, String productName, Integer productId, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+    public ServerResponse searchProduct(HttpServletRequest request, String productName, Integer productId, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         //判断user是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请以管理员身份登录");
         }

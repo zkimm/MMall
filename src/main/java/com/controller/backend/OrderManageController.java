@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -39,8 +40,8 @@ public class OrderManageController {
 
     @RequestMapping("/detail.do")
     @ResponseBody
-    public ServerResponse orderDetail(HttpSession session,Long orderNo) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse orderDetail(HttpServletRequest request, Long orderNo) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请先登录");
         }
@@ -52,9 +53,9 @@ public class OrderManageController {
 
     @RequestMapping("/search.do")
     @ResponseBody
-    public ServerResponse orderSearch(HttpSession session, Long orderNo,@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+    public ServerResponse orderSearch(HttpServletRequest request, Long orderNo,@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                       @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请先登录");
         }
@@ -66,8 +67,8 @@ public class OrderManageController {
 
     @RequestMapping("/send_goods.do")
     @ResponseBody
-    public ServerResponse orderSend(HttpSession session,Long orderNo) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse orderSend(HttpServletRequest request,Long orderNo) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请先登录");
         }

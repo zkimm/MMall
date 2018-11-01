@@ -9,11 +9,15 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.service.serviceInterface.IUserService;
 import com.sun.org.apache.regexp.internal.RE;
+import com.util.CookieUtil;
+import com.util.JsonUtil;
 import com.util.MD5Util;
+import com.util.RedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -221,6 +225,15 @@ public class UserServiceImpl implements IUserService {
         List<User> userList = userMapper.selectByExample(null);
         PageInfo pageInfo=new PageInfo(userList,5);
         return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public  User getUserformRedis(HttpServletRequest request){
+        //获取sessionId
+        String loginToken = CookieUtil.readLoginToken(request);
+        //通过sessionId获取user对象
+        String userStr = RedisPoolUtil.get(loginToken);
+        //转换成user对象
+        return JsonUtil.string2Obj(userStr,User.class);
     }
 
 }

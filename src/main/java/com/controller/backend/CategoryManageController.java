@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -60,9 +61,9 @@ public class CategoryManageController {
 
     @ResponseBody
     @RequestMapping("/get_category.do")
-    public ServerResponse getChildrenParallelCategory(HttpSession session,Integer categoryId) {
+    public ServerResponse getChildrenParallelCategory(HttpServletRequest request, Integer categoryId) {
         //1、先检查用户是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录，请先登录");
         }
@@ -74,9 +75,9 @@ public class CategoryManageController {
         }
     }
 
-    public ServerResponse getCategoryAndDeepChildRenCategory(HttpSession session,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
+    public ServerResponse getCategoryAndDeepChildRenCategory(HttpServletRequest request,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
         //1、先检查用户是否存在
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录，请先登录");
         }

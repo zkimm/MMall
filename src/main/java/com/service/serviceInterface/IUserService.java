@@ -4,6 +4,8 @@ package com.service.serviceInterface;
 import com.common.ServerResponse;
 import com.pojo.User;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IUserService {
 
     /**
@@ -64,5 +66,7 @@ public interface IUserService {
      boolean isAdmin(User user);
 
      ServerResponse getUsers(Integer pageNum,Integer pageSize);
+
+    User getUserformRedis(HttpServletRequest request);
 
 }

@@ -77,7 +77,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/get_user_info.do", method = RequestMethod.POST)
     public ServerResponse<User> getUserInfo(HttpServletRequest request) {
-//        User user = (User) session.getAttribute(Const.CURRENT_USER);
+//        User user = iUserService.getUserformRedis(request);
         //获取sessionId
         String loginToken = CookieUtil.readLoginToken(request);
         //通过sessionId从redis中获取user的json数据
@@ -116,8 +116,8 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/reset_password.do", method = RequestMethod.POST)
-    public ServerResponse<String> ResetPassword(String passwordOld, String passwordNew, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> ResetPassword(String passwordOld, String passwordNew, HttpServletRequest request) {
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录");
         }
@@ -126,8 +126,9 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/update_information.do", method = RequestMethod.POST)
-    public ServerResponse<User> updateInformation(User user, HttpSession session) {
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<User> updateInformation(User user, HttpServletRequest request) {
+//        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        User currentUser = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录");
         }
@@ -137,20 +138,28 @@ public class UserController {
 
         ServerResponse<User> response = iUserService.updateInformation(user);
         if (response.isSuccess()) {
-            response.getData().setUsername(currentUser.getUsername());
+            User tempUser = response.getData();
+            tempUser.setUsername(currentUser.getUsername());
             //将更新了的user放到session中
-            session.setAttribute(Const.CURRENT_USER, response.getData());
+//            session.setAttribute(Const.CURRENT_USER, response.getData());
+            String loginToken = CookieUtil.readLoginToken(request);
+            //转换成str，并保存到redis中
+            RedisPoolUtil.setEx(loginToken,JsonUtil.obj2String(tempUser),Const.RedisCache.REDIS_SESSION_TIME);
+
         }
         return response;
     }
 
     @ResponseBody
     @RequestMapping(value = "/get_information.do", method = RequestMethod.POST)
-    public ServerResponse<User> get_information(HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<User> get_information(HttpServletRequest request) {
+//        User user = iUserService.getUserformRedis(request);
+        User user = iUserService.getUserformRedis(request);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录，需要强制登录status=10");
         }
         return iUserService.getInformation(user.getId());
     }
+
+
 }
