@@ -28,7 +28,6 @@ public class TokenCache {
 
     public static void setKey(String key, String value) {
         RedisPoolUtil.setEx(key,value,ANWSER_TIME);
-//        loadingCache.put(key, value);
     }
 
     public static String getKey(String key) {
