@@ -12,7 +12,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import com.util.CookieUtil;
 import com.util.JsonUtil;
 import com.util.MD5Util;
-import com.util.RedisPoolUtil;
+import com.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -231,7 +231,7 @@ public class UserServiceImpl implements IUserService {
         //获取sessionId
         String loginToken = CookieUtil.readLoginToken(request);
         //通过sessionId获取user对象
-        String userStr = RedisPoolUtil.get(loginToken);
+        String userStr = RedisShardedPoolUtil.get(loginToken);
         //转换成user对象
         return JsonUtil.string2Obj(userStr,User.class);
     }

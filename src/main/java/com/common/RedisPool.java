@@ -12,9 +12,9 @@ public class RedisPool {
     private static String password=PropertiesUtil.getProperty("redis.password");
     //最大链接数
     private static Integer maxTotal=Integer.parseInt( PropertiesUtil.getProperty("redis.max.total","20"));
-    //在redispool中最大的idle状态（空闲）的redis实例的个数
+    //在RedisShardedPool中最大的idle状态（空闲）的redis实例的个数
     private static Integer maxIdle=Integer.parseInt( PropertiesUtil.getProperty("redis.max.idle","15"));
-    //在redispool中最小的idle状态（空闲）的redis实例的个数
+    //在RedisShardedPool中最小的idle状态（空闲）的redis实例的个数
     private static Integer minIdle=Integer.parseInt( PropertiesUtil.getProperty("redis.min.total","2"));
     //获取实例前是否先验证
     private static Boolean testOnBorrow=Boolean.parseBoolean( PropertiesUtil.getProperty("redis.test.borrow","true"));

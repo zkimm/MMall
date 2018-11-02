@@ -3,7 +3,7 @@ package com.common;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.util.RedisPoolUtil;
+import com.util.RedisShardedPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +27,13 @@ public class TokenCache {
 //            });
 
     public static void setKey(String key, String value) {
-        RedisPoolUtil.setEx(key,value,ANWSER_TIME);
+        RedisShardedPoolUtil.setEx(key,value,ANWSER_TIME);
     }
 
     public static String getKey(String key) {
         String value = null;
         try {
-            value = RedisPoolUtil.get(key);
+            value = RedisShardedPoolUtil.get(key);
 //            value = loadingCache.get(key);
             if ("null".equals(value)) {
                 return null;

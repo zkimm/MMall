@@ -7,7 +7,7 @@ import com.pojo.User;
 import com.service.serviceInterface.IUserService;
 import com.util.CookieUtil;
 import com.util.JsonUtil;
-import com.util.RedisPoolUtil;
+import com.util.RedisShardedPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +42,7 @@ public class UserController {
 //            session.setAttribute(Const.CURRENT_USER, response.getData());
             CookieUtil.writerLoginToken(httpServletResponse,session.getId());
             //6026D3E82ED223BA4494462B312C5E1C
-            RedisPoolUtil.setEx(session.getId(), JsonUtil.obj2String(response.getData()),Const.RedisCache.REDIS_SESSION_TIME);
+            RedisShardedPoolUtil.setEx(session.getId(), JsonUtil.obj2String(response.getData()),Const.RedisCache.REDIS_SESSION_TIME);
         }
         return response;
     }
@@ -57,7 +57,7 @@ public class UserController {
         //2、删除cookie
         CookieUtil.delLoginToken(request,response);
         //3、删除缓存
-        RedisPoolUtil.del(loginToken);
+        RedisShardedPoolUtil.del(loginToken);
 
         return ServerResponse.createBySuccess();
     }
@@ -81,7 +81,7 @@ public class UserController {
         //获取sessionId
         String loginToken = CookieUtil.readLoginToken(request);
         //通过sessionId从redis中获取user的json数据
-        String userJson = RedisPoolUtil.get(loginToken);
+        String userJson = RedisShardedPoolUtil.get(loginToken);
         //json转换成user对象
         User user = JsonUtil.string2Obj(userJson, User.class);
         if (user != null) {
@@ -144,7 +144,7 @@ public class UserController {
 //            session.setAttribute(Const.CURRENT_USER, response.getData());
             String loginToken = CookieUtil.readLoginToken(request);
             //转换成str，并保存到redis中
-            RedisPoolUtil.setEx(loginToken,JsonUtil.obj2String(tempUser),Const.RedisCache.REDIS_SESSION_TIME);
+            RedisShardedPoolUtil.setEx(loginToken,JsonUtil.obj2String(tempUser),Const.RedisCache.REDIS_SESSION_TIME);
 
         }
         return response;
